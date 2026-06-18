@@ -6,10 +6,12 @@ metadata:
 spec:
   interval: 1m
   chartRef:
-    kind: OciRepository
+    kind: OCIRepository
     name: bitnami-nginx
     namespace: flux-system
   values:
     service:
       type: ClusterIP
     replicaCount: 1
+    globals:
+        tag: 1.31.2-debian-12-r0

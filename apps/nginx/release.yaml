@@ -5,14 +5,10 @@ metadata:
   namespace: default
 spec:
   interval: 1m
-  chart:
-    spec:
-      chart: nginx
-      version: "21.x"
-      sourceRef:
-        kind: HelmRepository
-        name: bitnami
-        namespace: flux-system
+  chartRef:
+    kind: OciRepository
+    name: bitnami-nginx
+    namespace: flux-system
   values:
     service:
       type: ClusterIP

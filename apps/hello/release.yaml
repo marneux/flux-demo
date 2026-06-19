@@ -5,16 +5,25 @@ metadata:
   namespace: default
 spec:
   interval: 1m
-  chart:
-    spec:
-      chart: http-echo
-      version: "0.2.3"
-      sourceRef:
-        kind: HelmRepository
-        name: hashicorp
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: go-hello-world
+    namespace: flux-system
   values:
+    replicaCount: 1
     service:
       type: ClusterIP
     args:
-      - "-text=Hello from Flux CD + Helm in k3d!"
+      - "-listen-addr=:3000"
+      - "-log-format=json"
+      - "-log-level=info"
+      - "-otel-enabled"
+    env:
+      - name: "OTEL_SERVICE_NAME"
+        value: "go-hello-world"
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+      - name: "OTEL_EXPORTER_OTLP_ENDPOINT"
+        value: "http://$(NODE_IP):4318"
